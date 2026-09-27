@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1028">
+  <meta name="description" content="Untuk Wulan — sebuah surat cinta digital dari Ghibtah.">
+  <title>Untuk Wulan ♡ 13 Oktober</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="preloader">
+    <div class="loader-heart">♥</div>
+    <p>menyiapkan sesuatu untuk Wulan...</p>
+  </div>
+
+  <canvas id="fx"></canvas>
+  <div class="vignette"></div>
+
+  <button id="music" class="music" aria-label="Musik">
+    <span class="music-bars"><i></i><i></i><i></i></span>
+    <span>musik</span>
+  </button>
+
+  <audio id="audio" loop preload="none">
+    <source src="assets/music/betty.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="progress"><span id="progressBar"></span></div>
+
+  <main>
+    <section class="scene hero" id="s0">
+      <div class="stars"></div>
+      <div class="moon"></div>
+      <div class="hero-copy reveal">
+        <div class="eyebrow">A LITTLE SOMETHING FOR YOU</div>
+        <h1>Wulan<span>.</span></h1>
+        <p>Ada sesuatu yang Ghibtah simpan<br>khusus buat kamu.</p>
+        <button id="begin" class="pill">💗 mulai</button>
+        <small class="hint">gunakan suara kalau kamu mau ♫</small>
+      </div>
+    </section>
+
+    <section class="scene gift-scene" id="s1">
+      <div class="scene-copy">
+        <div class="eyebrow">PESAN RAHASIA</div>
+        <h2>Satu kado kecil<br><em>untuk seseorang yang besar artinya.</em></h2>
+        <p>Klik. Jangan takut. 🎁</p>
+      </div>
+
+      <button id="gift" class="gift" aria-label="Buka kado">
+        <span class="glow"></span>
+        <span class="lid"><i></i></span>
+        <span class="box"></span>
+        <span class="ribbon-v"></span>
+        <span class="ribbon-h"></span>
+        <span class="bow b1"></span><span class="bow b2"></span>
+        <b class="spark a">✦</b><b class="spark b">✧</b><b class="spark c">✦</b>
+      </button>
+
+      <div id="giftReveal" class="gift-reveal">
+        <strong>HAPPY BIRTHDAY, WULAN! 🎆</strong>
+        <span>Semoga hari ini selembut senyum kamu.</span>
+      </div>
+    </section>
+
+    <section class="scene love-scene" id="s2">
+      <div class="love-bg"></div>
+      <div class="scene-copy center">
+        <div class="eyebrow dark">JUST SO YOU KNOW</div>
+        <p class="pre-love">Ghibtah cuma mau bilang...</p>
+        <h2 class="love-title">I <em>LOVE</em> YOU</h2>
+        <p class="love-caption">Jarak boleh jauh.<br><b>Perasaan Ghibtah nggak ikut menjauh.</b></p>
+      </div>
+      <svg class="heart-svg" viewBox="0 0 100 90" aria-hidden="true">
+        <path id="heartPath" d="M50 82 C40 72 7 55 7 28 C7 8 32 1 50 21 C68 1 93 8 93 28 C93 55 60 72 50 82Z"/>
+      </svg>
+      <div id="heartParticles"></div>
+    </section>
+
+    <section class="scene ldr-scene" id="s3">
+      <div class="scene-inner">
+        <div class="eyebrow">LDR DI ANTARA KITA</div>
+        <h2>Antara dua tempat,<br><em>ada satu hati yang sama.</em></h2>
+
+        <div class="orbit-card">
+          <div class="person">
+            <div class="avatar">G</div><b>Ghibtah</b><small>always here ♡</small>
+          </div>
+          <div class="route">
+            <span class="route-line"></span>
+            <span class="route-heart">♥</span>
+            <small>4 bulan & terus berjalan...</small>
+          </div>
+          <div class="person">
+            <div class="avatar pink">W</div><b>Wulan</b><small>always loved ♡</small>
+          </div>
+        </div>
+
+        <div class="ldr-lines">
+          <p>“Kita memang sedang dipisahkan jarak.”</p>
+          <p>“Tapi setiap hari, kamu tetap punya tempat di pikiran Ghibtah.”</p>
+          <p>“Empat bulan mungkin baru awal...”</p>
+          <p class="big">Masih banyak hari yang ingin Ghibtah lewati sama kamu. 🤎</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene date-scene" id="s4">
+      <div class="date-glow"></div>
+      <div class="date-content center">
+        <div class="eyebrow brown">THE DAY</div>
+        <div class="date-big">13</div>
+        <div class="month">O K T O B E R</div>
+        <p>Hari lahir seseorang yang sangat berarti buat Ghibtah.</p>
+        <div class="count">
+          <div><b id="d">00</b><small>hari</small></div>
+          <div><b id="h">00</b><small>jam</small></div>
+          <div><b id="m">00</b><small>menit</small></div>
+          <div><b id="s">00</b><small>detik</small></div>
+        </div>
+        <div class="date-heart">♡</div>
+      </div>
+    </section>
+
+    <section class="scene cute-scene" id="s5">
+      <div class="petals"></div>
+      <div class="cake">
+        <div class="flame"></div><div class="candle"></div>
+        <div class="cake-top"></div><div class="cake-mid"></div><div class="cake-base"></div><div class="plate"></div>
+      </div>
+      <div class="cute-copy center">
+        <div class="eyebrow dark">TODAY IS ABOUT YOU</div>
+        <h2>Selamat ulang tahun,<br><em>Wulan yang gemoy. 🎂</em></h2>
+        <div class="wish-card">
+          <p>Semoga di umur kamu yang baru, lebih banyak hal baik datang tanpa kamu minta.</p>
+          <p>Semoga senyum kamu selalu punya alasan.</p>
+          <p>Semoga semua yang kamu semogakan pelan-pelan menemukan jalannya.</p>
+          <p class="special">Dan semoga Ghibtah masih boleh jadi salah satu alasan kecil di balik senyum itu. 💗</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene photo-scene" id="s6">
+      <div class="scene-inner">
+        <div class="eyebrow">OUR LITTLE MEMORY</div>
+        <h2>Satu foto,<br><em>seribu rasa.</em></h2>
+
+        <div class="scrapbook">
+          <div class="tape"></div>
+          <div class="photo-card main-photo">
+            <img src="assets/photos/ghibtah-wulan.jpg" alt="Ghibtah dan Wulan">
+            <span>Ghibtah × Wulan</span>
+          </div>
+          <div class="sticker heart-sticker">♥</div>
+          <div class="sticker star-sticker">✦</div>
+          <div class="mini-note">jauh di tempat,<br>dekat di hati ♡</div>
+        </div>
+
+        <p class="photo-text">Foto ini mungkin sederhana. Tapi momen yang melibatkan kamu nggak pernah terasa sederhana.</p>
+      </div>
+    </section>
+
+    <section class="scene sorry-scene" id="s7">
+      <div class="scene-inner center">
+        <div class="eyebrow">A LITTLE APOLOGY</div>
+        <div class="letter-reveal">
+          <p>Wulan...</p>
+          <p>maaf ya.</p>
+          <p>Untuk sekarang Ghibtah cuma bisa ngucapin ulang tahun kamu lewat website kecil ini.</p>
+          <p>Ghibtah pengen banget suatu hari nanti...</p>
+          <p class="big">nggak cuma bisa ngucapin dari jauh.</p>
+          <p class="big">Ghibtah pengen ada di samping kamu.</p>
+          <p class="soft">Bukan cuma lewat layar. 🤎</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene promise-scene" id="s8">
+      <div class="promise-orb">♡</div>
+      <div class="scene-inner center narrow">
+        <div class="eyebrow brown">A SMALL PROMISE</div>
+        <h2>Aku nggak tahu masa depan akan seperti apa.</h2>
+        <p>Yang Ghibtah tahu, selama masih diberi kesempatan, Ghibtah akan terus berusaha menjaga apa yang kita punya.</p>
+        <p>Dan semoga suatu hari nanti...</p>
+        <h3>13 Oktober nggak cuma dirayakan lewat layar.</h3>
+        <strong>Tapi langsung di samping kamu. 🌷</strong>
+      </div>
+    </section>
+
+    <section class="scene envelope-scene" id="s9">
+      <div class="scene-inner center">
+        <div class="eyebrow">ONE LAST MESSAGE</div>
+        <h2>Ada satu pesan terakhir<br><em>yang belum Ghibtah bilang.</em></h2>
+
+        <button id="envelope" class="envelope" aria-label="Buka surat">
+          <span class="env-back"></span>
+          <span class="paper">
+            <span class="paper-inner">
+              <b>Untuk Wulan,</b>
+              <span>Selamat ulang tahun ya, sayang.</span>
+              <span>Terima kasih sudah hadir dan membuat empat bulan terakhir terasa jauh lebih berwarna.</span>
+              <span>Semoga hari ini kamu merasa disayang, dihargai, dan diingat—karena memang kamu sepenting itu.</span>
+              <span>Kalau suatu hari nanti kamu baca ini lagi, semoga kamu ingat bahwa pernah ada seseorang bernama Ghibtah yang dari jauh tetap berusaha membuat kamu tersenyum.</span>
+              <span>Happy birthday, Wulan. 🤍</span>
+              <i>— Ghibtah ♡</i>
+            </span>
+          </span>
+          <span class="flap"></span>
+          <span class="env-front"></span>
+          <span class="seal">♥</span>
+        </button>
+        <small class="tap">tap amplopnya ♡</small>
+      </div>
+    </section>
+
+    <section class="scene final-scene" id="s10">
+      <div class="final-stars"></div>
+      <div class="final-heart">♥</div>
+      <div class="final-copy center">
+        <div class="eyebrow">13 • 10 • ALWAYS</div>
+        <h2>Happy Birthday,<br><em>Wulan.</em></h2>
+        <p>See you soon.</p>
+        <small>Ghibtah × Wulan</small>
+        <button id="again" class="outline">↻ ulangi dari awal</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
