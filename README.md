@@ -1,34 +1,19 @@
-# Wulan Birthday V2 — Ghibtah × Wulan ♡
+# Wulan Birthday — V4 Cinematic
 
-Versi cinematic, mobile-first, static website, siap GitHub Pages.
+V4 adalah redesign visual yang dibuat lebih dekat dengan preview cinematic: dark navy + pink neon, typography romantis, glassmorphism, glowing gift, heart particles, scrapbook photo, letter, dan final birthday scene.
 
-## Yang baru di V2
-- Transisi antar section lebih sinematik
-- Heart outline + partikel mengikuti bentuk hati
-- Gift box dengan lid animation + fireworks
-- LDR scene
-- Date reveal 13 Oktober
-- Scrapbook/polaroid 3D-ish
-- Surat keluar dari amplop
-- Canvas ambient particles + fireworks
-- Music toggle
-- Scroll progress
-- Responsive mobile/desktop
-- prefers-reduced-motion
-- Tidak membutuhkan backend/framework
+## Replace these files
+- `index.html`
+- `css/style.css`
+- `js/main.js`
 
-## Foto
-Foto yang kamu upload sudah berada di:
-`assets/photos/ghibtah-wulan.jpg`
+## Keep these assets
+- `assets/photos/ghibtah-wulan.jpg`
+- `assets/music/betty.mp3`
 
-Untuk mengganti foto, cukup replace file tersebut dengan nama yang sama.
+No asset paths were changed.
 
-## Musik
-Website disiapkan untuk:
-`assets/music/betty.mp3`
+## Deploy
+Commit/push ke branch `main`, lalu buka GitHub Pages. Jika browser masih menampilkan versi lama, hard refresh atau buka Incognito.
 
-File lagu tidak disertakan. Tambahkan hanya file audio yang kamu punya hak/izin untuk digunakan. Browser akan mulai audio setelah tombol Mulai/Musik ditekan.
-
-## GitHub Pages
-Upload seluruh isi folder ini ke repository, lalu:
-Settings → Pages → Deploy from a branch → main → /(root) → Save.
+> Music note: `betty.mp3` is expected to be your legally permitted copy of the song.
