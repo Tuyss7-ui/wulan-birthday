@@ -1,400 +1,277 @@
-const pinInput = document.getElementById('pin');
-const loginForm = document.getElementById('loginForm');
-const message = document.getElementById('message');
-const loginCard = document.getElementById('loginCard');
-const galleryScreen = document.getElementById('galleryScreen');
-const app = document.getElementById('app');
-const photoViewer = document.getElementById('photoViewer');
-const viewerImage = document.getElementById('viewerImage');
-const viewerCaption = document.getElementById('viewerCaption');
-const loginHearts = document.getElementById('loginHearts');
-const TOTAL_LOVES = 36;
-const loveFragment = document.createDocumentFragment();
-const loveWords = [];
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selamat Ulang Tahun</title>
+    <style>
+      /* Fallback for mobile file previews that cannot load the sibling CSS file. */
+      * { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        min-height: 100svh;
+        margin: 0;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: radial-gradient(ellipse at 50% 45%, #432540, #100b16 72%);
+        color: #f8eaf2;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .square {
+        position: relative;
+        width: min(390px, 100%);
+        height: min(570px, calc(100svh - 32px));
+        min-height: min(500px, calc(100svh - 32px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .login-hearts { position: fixed; inset: 0; pointer-events: none; opacity: .12; }
+      .love { position: fixed; pointer-events: none; }
+      .love-word { color: #ff9bc4; font-size: 10px; }
+      .login-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 62px 28px 20px;
+        border: 1px solid rgba(236,198,219,.2);
+        border-radius: 24px;
+        background: linear-gradient(145deg, #48253d, #411f36);
+        box-shadow: 0 18px 48px rgba(0,0,0,.3);
+        text-align: center;
+      }
+      .login-flower { position: absolute; top: -30px; left: 50%; font-size: 40px; transform: translateX(-50%); }
+      .login-card .eyebrow { display: none; }
+      .login-card h1 { margin: 0; color: #f8eaf2; font: 400 clamp(22px, 7vw, 34px)/1.25 Georgia, serif; white-space: normal; }
+      .login-card .subtitle { margin: 12px 0 30px; color: rgba(238,218,231,.6); font-size: 12px; }
+      .login-card form { position: relative; }
+      .login-card #pin { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+      .pin-dots { display: flex; justify-content: center; gap: 12px; margin: 0 auto 28px; }
+      .pin-dots span { width: 14px; height: 14px; border: 1px solid rgba(237,190,217,.35); border-radius: 50%; }
+      .pin-dots span.is-filled { background: #f18cbb; border-color: #f18cbb; }
+      .number-pad { display: grid; grid-template-columns: repeat(3, 1fr); justify-items: center; gap: 10px 12px; }
+      .login-card .number-pad button {
+        width: 54px; height: 54px; margin: 0; padding: 0;
+        border: 1px solid rgba(239,211,230,.14); border-radius: 50%;
+        background: rgba(255,255,255,.045); color: #faedf6;
+        font: 16px Georgia, serif; cursor: pointer;
+      }
+      .login-card .number-pad .enter-key { font: 21px Arial, sans-serif; }
+      .login-card .message { position: absolute; right: 0; bottom: -22px; left: 0; min-height: 14px; margin: 0; color: #f4bdd7; font-size: 10px; }
+      .login-footer { margin: 20px 0 0; color: rgba(238,218,231,.55); font-size: 10px; }
+      [hidden] { display: none !important; }
+      .square.gallery-mode { width: min(720px, calc(100vw - 32px)); height: min(720px, calc(100svh - 32px)); min-height: 0; }
+      .gallery-screen { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 24px; background: linear-gradient(145deg, #172443, #100b16); }
+      .gallery-heading { position: absolute; top: 6%; z-index: 2; width: 100%; text-align: center; }
+      .gallery-heading .eyebrow { color: #ff9bc4; }
+      .gallery-heading h1 { margin: 0; font: 32px Georgia, serif; }
+      .gallery-hint { color: #c4c9d8; font-size: 11px; }
+      .photo-orbit { position: absolute; inset: 15% 0 25%; perspective: 900px; touch-action: pan-y; }
+      .photo-card { position: absolute; top: 50%; left: 50%; width: clamp(130px, 40vw, 190px); height: clamp(170px, 51vw, 245px); padding: 5px; overflow: hidden; border: 1px solid #ff9bc4; border-radius: 16px; background: #172443; cursor: pointer; }
+      .photo-card img, .photo-placeholder { position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); border-radius: 10px; }
+      .photo-card img { object-fit: cover; }
+      .photo-card:not(.has-photo) img { display: none; }
+      .photo-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffd1e3; background: #202944; }
+      .surprise-slider { position: absolute; right: 5%; bottom: 6%; left: 5%; padding: 12px; border: 1px solid rgba(255,180,213,.42); border-radius: 16px; background: #171426; text-align: center; }
+      .surprise-slider label, .slider-hint { display: block; color: #ffe1ee; font-size: 11px; }
+      .surprise-slider input { width: 100%; accent-color: #ff6fae; }
+      .heart-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+      @media (max-width: 360px) {
+        .login-card { padding-right: 18px; padding-left: 18px; }
+        .number-pad { gap: 9px 8px; }
+        .login-card .number-pad button { width: 50px; height: 50px; }
+      }
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="square" id="app">
+      <div class="login-hearts" id="loginHearts" aria-hidden="true"></div>
+      <section class="login-card" id="loginCard" aria-labelledby="page-title">
+        <div class="login-flower" aria-hidden="true">🌸</div>
+        <p class="eyebrow">Hari spesialmu</p>
+        <h1 id="page-title">For You, My Love</h1>
+        <p class="subtitle">Enter our secret code</p>
 
-for (let i = 0; i < TOTAL_LOVES; i += 1) {
-  const love = document.createElement('div');
-  love.className = 'love';
-  const word = document.createElement('span');
-  word.className = 'love-word';
-  word.textContent = 'I love you';
+        <form id="loginForm">
+          <input
+            id="pin"
+            name="pin"
+            type="password"
+            inputmode="numeric"
+            maxlength="8"
+            autocomplete="one-time-code"
+            aria-label="PIN tanggal lahir, 8 angka"
+            aria-describedby="pinDots message"
+          />
+          <div class="pin-dots" id="pinDots" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="number-pad" aria-label="Keypad PIN">
+            <button type="button" data-key="1">1</button>
+            <button type="button" data-key="2">2</button>
+            <button type="button" data-key="3">3</button>
+            <button type="button" data-key="4">4</button>
+            <button type="button" data-key="5">5</button>
+            <button type="button" data-key="6">6</button>
+            <button type="button" data-key="7">7</button>
+            <button type="button" data-key="8">8</button>
+            <button type="button" data-key="9">9</button>
+            <button type="button" data-action="clear" aria-label="Hapus semua angka">×</button>
+            <button type="button" data-key="0">0</button>
+            <button type="submit" class="enter-key" aria-label="Masuk">↵</button>
+          </div>
+          <p id="message" class="message" role="status" aria-live="polite"></p>
+        </form>
+        <p class="login-footer">Masukkan 8 angka untuk membuka kenangan 💕</p>
+      </section>
 
-  love.appendChild(word);
-  loveFragment.appendChild(love);
-  loveWords.push(love);
-}
+      <section class="gallery-screen" id="galleryScreen" aria-labelledby="gallery-title" hidden>
+        <header class="gallery-heading">
+          <p class="eyebrow">Karunia Tsani Putri Wulandari</p>
+          <h1 id="gallery-title">Untukmu <span aria-hidden="true">♥</span></h1>
+          <p class="gallery-hint">Geser foto untuk melihat kenangan · tekan untuk memperbesar</p>
+        </header>
 
-loginHearts.appendChild(loveFragment);
+        <canvas class="heart-canvas" id="heartCanvas" aria-hidden="true"></canvas>
 
-function animateLovePath(timestamp) {
-  const width = Math.min(window.innerWidth * 0.84, 850);
-  const height = Math.min(window.innerHeight * 0.84, 750);
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  const elapsed = reducedMotion.matches ? 0 : timestamp / 30000;
+        <div class="photo-orbit" aria-label="Delapan foto kenangan">
+          <button class="photo-card" type="button" style="--angle: 0deg" aria-label="Perbesar foto 1">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 1</small></span>
+            <img src="foto-1.jpg" alt="Kenangan 1" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 45deg" aria-label="Perbesar foto 2">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 2</small></span>
+            <img src="foto-2.jpg" alt="Kenangan 2" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 90deg" aria-label="Perbesar foto 3">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 3</small></span>
+            <img src="foto-3.jpg" alt="Kenangan 3" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 135deg" aria-label="Perbesar foto 4">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 4</small></span>
+            <img src="foto-4.jpg" alt="Kenangan 4" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 180deg" aria-label="Perbesar foto 5">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 5</small></span>
+            <img src="foto-5.jpg" alt="Kenangan 5" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 225deg" aria-label="Perbesar foto 6">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 6</small></span>
+            <img src="foto-6.jpg" alt="Kenangan 6" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 270deg" aria-label="Perbesar foto 7">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 7</small></span>
+            <img src="foto-7.jpg" alt="Kenangan 7" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 315deg" aria-label="Perbesar foto 8">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 8</small></span>
+            <img src="foto-8.jpg" alt="Kenangan 8" />
+          </button>
+        </div>
 
-  loveWords.forEach((love, index) => {
-    const angle = (index / TOTAL_LOVES + elapsed) * Math.PI * 2;
-    const sin = Math.sin(angle);
-    const heartX = 16 * sin * sin * sin;
-    const heartY = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
-    love.style.left = `${centerX + (heartX / 17) * (width / 2)}px`;
-    love.style.top = `${centerY - (heartY / 17) * (height / 2)}px`;
-  });
+        <div class="spinning-ball" aria-hidden="true">
+          <div class="ball-orb"><span></span></div>
+          <div class="ball-ring ball-ring-one"></div>
+          <div class="ball-ring ball-ring-two"></div>
+        </div>
 
-  window.requestAnimationFrame(animateLovePath);
-}
+        <div class="surprise-slider">
+          <label for="surpriseSlider">Geser foto 1 sampai 8 untuk membuka kejutan 🎁</label>
+          <input id="surpriseSlider" type="range" min="0" max="7" step="1" value="0" aria-label="Pilih foto, 1 sampai 8" aria-describedby="sliderHint" />
+          <span id="sliderHint" class="slider-hint" aria-live="polite">Foto 1 dari 8</span>
+        </div>
 
-window.requestAnimationFrame(animateLovePath);
+        <button class="last-heart" id="lastHeart" type="button" aria-label="Buka surat ulang tahun" hidden>♥</button>
+      </section>
+    </main>
 
-const pinDots = [...document.querySelectorAll('#pinDots span')];
+    <div class="celebration-party" id="celebrationParty" aria-hidden="true" hidden>
+      <div class="party-particles" id="partyParticles"></div>
+      <div class="party-message">SELAMAT ULANG TAHUN SAYANG <span>🎂</span></div>
+    </div>
 
-function updatePinDots() {
-  pinDots.forEach((dot, index) => {
-    dot.classList.toggle('is-filled', index < pinInput.value.length);
-  });
-}
+    <dialog class="photo-viewer" id="photoViewer" aria-label="Foto diperbesar">
+      <button class="viewer-close" type="button" aria-label="Tutup foto">×</button>
+      <img id="viewerImage" alt="Foto kenangan diperbesar" />
+      <p id="viewerCaption"></p>
+    </dialog>
 
-pinInput.addEventListener('input', () => {
-  pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 8);
-  updatePinDots();
-  if (pinInput.value.length === 8) loginForm.requestSubmit();
-});
+    <dialog class="letter-dialog" id="letterDialog" aria-label="Surat ulang tahun">
+      <button class="viewer-close" id="letterClose" type="button" aria-label="Tutup surat">×</button>
+      <div class="envelope-stage" id="envelopeStage">
+        <p class="letter-eyebrow">Ada surat kecil untukmu</p>
+        <div class="envelope" aria-hidden="true"><span>♥</span></div>
+        <button class="open-letter" id="openLetter" type="button">Buka surat 💌</button>
+      </div>
+      <article class="letter-paper" id="letterPaper" hidden>
+        <button class="book-cover" id="bookCover" type="button" aria-label="Buka buku kenangan" aria-expanded="false">
+          <span class="cover-ornament" aria-hidden="true">✦　♥　✦</span>
+          <span class="cover-kicker">SEBUAH CERITA KECIL</span>
+          <span class="cover-title">Untukmu,<br />di hari istimewa</span>
+          <span class="cover-heart" aria-hidden="true">♥</span>
+          <span class="cover-instruction">Buka buku ♡</span>
+        </button>
+        <div class="book-particles" id="bookParticles" aria-hidden="true"></div>
+        <div class="book-spread is-active" id="bookSpreadOne" aria-label="Slide 1 dari 2">
+          <section class="book-page book-message">
+            <div class="book-stamp" aria-hidden="true">♥</div>
+            <p class="letter-eyebrow">Untukmu, di hari spesialmu</p>
+            <h2>Selamat Ulang Tahun!</h2>
+            <div class="book-divider" aria-hidden="true">✦　♡　✦</div>
+            <p>Semoga hari ini dipenuhi kebahagiaan, tawa, dan banyak hal indah. Semoga semua impianmu satu per satu terwujud, selalu diberi kesehatan, dan dikelilingi orang-orang yang menyayangimu.</p>
+            <p>Terima kasih sudah menjadi seseorang yang begitu istimewa. Semoga setiap langkahmu membawa cerita yang menyenangkan. Aku sayang kamu! 💖</p>
+            <p class="letter-signoff">Dengan penuh cinta ♥</p>
+            <span class="page-number">01 · selalu untukmu</span>
+          </section>
+          <section class="book-page book-memories" aria-label="Galeri foto kenangan berbentuk hati">
+            <p class="letter-eyebrow">Potongan cerita kita</p>
+            <h2>Kenangan Manis</h2>
+            <div class="memory-heart">
+              <figure class="memory-photo memory-1"><img src="foto-9.jpg" alt="Kenangan manis 1" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-2"><img src="foto-10.jpg" alt="Kenangan manis 2" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-3"><img src="foto-11.jpg" alt="Kenangan manis 3" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-4"><img src="foto-12.jpg" alt="Kenangan manis 4" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-5"><img src="foto-13.jpg" alt="Kenangan manis 5" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-6"><img src="foto-14.jpg" alt="Kenangan manis 6" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-7"><img src="foto-15.jpg" alt="Kenangan manis 7" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-8"><img src="foto-16.jpg" alt="Kenangan manis 8" /><figcaption>♡</figcaption></figure>
+            </div>
+            <p class="memory-note">Setiap momen bersamamu jadi cerita favoritku ✨</p>
+            <span class="page-number">02 · cerita kita</span>
+          </section>
+        </div>
+        <div class="book-spread scrapbook-spread" id="bookSpreadTwo" aria-label="Slide 2 dari 2" aria-hidden="true">
+          <section class="scrapbook-collage" aria-label="Kolase foto ulang tahun">
+            <p class="letter-eyebrow">Album kecil kita · bagian II</p>
+            <h2 class="collage-title"><span>HAPPY</span><span>BIRTHDAY</span></h2>
+            <div class="collage-photos">
+              <figure class="memory-photo scrapbook-photo scrapbook-1"><img src="foto-17.jpg" alt="Kenangan album 17" /><figcaption>hari penuh tawa</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-2"><img src="foto-18.jpg" alt="Kenangan album 18" /><figcaption>selalu bersama</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-3"><img src="foto-19.jpg" alt="Kenangan album 19" /><figcaption>momen favorit</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-4"><img src="foto-20.jpg" alt="Kenangan album 20" /><figcaption>senyum terbaik</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-5"><img src="foto-21.jpg" alt="Kenangan album 21" /><figcaption>petualangan kecil</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-6"><img src="foto-22.jpg" alt="Kenangan album 22" /><figcaption>cerita kita</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-7"><img src="foto-23.jpg" alt="Kenangan album 23" /><figcaption>hangatnya hari</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-8"><img src="foto-24.jpg" alt="Kenangan album 24" /><figcaption>selamanya ♥</figcaption></figure>
+            </div>
+            <span class="collage-sticker" aria-hidden="true">Cute! ♥</span>
+            <span class="collage-ribbon" aria-hidden="true">♡</span>
+            <span class="page-number">03 · potongan cerita kita</span>
+          </section>
+        </div>
+        <nav class="book-navigation" aria-label="Navigasi slide buku">
+          <button id="previousSpread" type="button" aria-label="Slide sebelumnya" disabled>‹</button>
+          <span id="spreadCounter" aria-live="polite">1 / 2</span>
+          <button id="nextSpread" type="button" aria-label="Slide berikutnya">›</button>
+        </nav>
+      </article>
+    </dialog>
 
-document.querySelectorAll('.number-pad button[data-key]').forEach((button) => {
-  button.addEventListener('click', () => {
-    if (pinInput.value.length < 8) {
-      pinInput.value += button.dataset.key;
-      updatePinDots();
-      if (pinInput.value.length === 8) loginForm.requestSubmit();
-    }
-  });
-});
-
-document.querySelector('[data-action="clear"]').addEventListener('click', () => {
-  pinInput.value = '';
-  updatePinDots();
-  message.textContent = '';
-  message.classList.remove('error');
-});
-
-loginForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  message.className = 'message';
-
-  if (pinInput.value !== '00000000') {
-    message.textContent = 'PIN salah. Coba lagi.';
-    message.classList.add('error');
-    pinInput.value = '';
-    updatePinDots();
-    return;
-  }
-
-  loginCard.hidden = true;
-  galleryScreen.hidden = false;
-  app.classList.add('gallery-mode');
-  updatePhotoCarousel();
-  resizeHeartCanvas();
-  window.requestAnimationFrame(animateHeartParticles);
-});
-
-const photoOrbit = document.querySelector('.photo-orbit');
-const photoCards = [...document.querySelectorAll('.photo-card')];
-const heartCanvas = document.getElementById('heartCanvas');
-const heartContext = heartCanvas.getContext('2d');
-const heartParticles = Array.from({ length: 120 }, (_, index) => ({
-  angle: (index / 120) * Math.PI * 2,
-  size: 1 + Math.random() * 1.5,
-  phase: Math.random() * Math.PI * 2,
-  previousX: null,
-  previousY: null,
-}));
-let heartCanvasWidth = 0;
-let heartCanvasHeight = 0;
-const surpriseSlider = document.getElementById('surpriseSlider');
-const celebrationParty = document.getElementById('celebrationParty');
-const partyParticles = document.getElementById('partyParticles');
-const sliderHint = document.getElementById('sliderHint');
-const lastHeart = document.getElementById('lastHeart');
-const letterDialog = document.getElementById('letterDialog');
-const envelopeStage = document.getElementById('envelopeStage');
-const letterPaper = document.getElementById('letterPaper');
-const bookCover = document.getElementById('bookCover');
-const bookSpreads = [...document.querySelectorAll('.book-spread')];
-const previousSpread = document.getElementById('previousSpread');
-const nextSpread = document.getElementById('nextSpread');
-const spreadCounter = document.getElementById('spreadCounter');
-let activeSpread = 0;
-let spreadSwipeStart = null;
-let activePhoto = 0;
-let renderedPhoto = 0;
-let partyTimeout;
-const CELEBRATION_DURATION = 5000;
-let dragStartX = null;
-let suppressPhotoClickUntil = 0;
-
-function resizeHeartCanvas() {
-  const bounds = galleryScreen.getBoundingClientRect();
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-  heartCanvasWidth = bounds.width;
-  heartCanvasHeight = bounds.height;
-  heartCanvas.width = Math.round(bounds.width * pixelRatio);
-  heartCanvas.height = Math.round(bounds.height * pixelRatio);
-  heartContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-}
-
-function animateHeartParticles(timestamp) {
-  heartContext.clearRect(0, 0, heartCanvasWidth, heartCanvasHeight);
-  const time = reducedMotion.matches ? 0 : timestamp;
-  const pulse = 1 + Math.sin(time / 700) * 0.035;
-  const centerX = heartCanvasWidth / 2;
-  const centerY = heartCanvasHeight * 0.51;
-  const scaleX = Math.min(heartCanvasWidth * 0.39, heartCanvasHeight * 0.48) * pulse;
-  const scaleY = heartCanvasHeight * 0.32 * pulse;
-  const flow = time * 0.000035;
-
-  heartParticles.forEach((particle) => {
-    const angle = particle.angle + flow;
-    const sin = Math.sin(angle);
-    const x = centerX + 16 * sin ** 3 / 17 * scaleX;
-    const curveY = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
-    const y = centerY - curveY / 19 * scaleY;
-    const twinkle = 0.45 + (Math.sin(time / 450 + particle.phase) + 1) * 0.25;
-
-    if (particle.previousX !== null) {
-      heartContext.beginPath();
-      heartContext.moveTo(particle.previousX, particle.previousY);
-      heartContext.lineTo(x, y);
-      heartContext.strokeStyle = `rgba(255, 130, 184, ${twinkle * 0.28})`;
-      heartContext.lineWidth = particle.size * 0.7;
-      heartContext.stroke();
-    }
-
-    heartContext.beginPath();
-    heartContext.arc(x, y, particle.size * (0.8 + twinkle * 0.45), 0, Math.PI * 2);
-    heartContext.fillStyle = `rgba(255, 205, 228, ${twinkle})`;
-    heartContext.shadowColor = 'rgba(255, 105, 170, 0.9)';
-    heartContext.shadowBlur = 9;
-    heartContext.fill();
-    particle.previousX = x;
-    particle.previousY = y;
-  });
-
-  heartContext.shadowBlur = 0;
-  window.requestAnimationFrame(animateHeartParticles);
-}
-
-function setBookSpread(index) {
-  activeSpread = Math.max(0, Math.min(index, bookSpreads.length - 1));
-  bookSpreads.forEach((spread, spreadIndex) => {
-    const isActive = spreadIndex === activeSpread;
-    spread.classList.toggle('is-active', isActive);
-    spread.setAttribute('aria-hidden', String(!isActive));
-    if (isActive) spread.scrollTop = 0;
-  });
-  previousSpread.disabled = activeSpread === 0;
-  nextSpread.disabled = activeSpread === bookSpreads.length - 1;
-  spreadCounter.textContent = `${activeSpread + 1} / ${bookSpreads.length}`;
-}
-
-previousSpread.addEventListener('click', () => setBookSpread(activeSpread - 1));
-nextSpread.addEventListener('click', () => setBookSpread(activeSpread + 1));
-
-letterPaper.addEventListener('pointerdown', (event) => {
-  if (event.target.closest('button')) return;
-  spreadSwipeStart = { x: event.clientX, y: event.clientY };
-  letterPaper.setPointerCapture(event.pointerId);
-});
-
-letterPaper.addEventListener('pointerup', (event) => {
-  if (!spreadSwipeStart) return;
-  const deltaX = event.clientX - spreadSwipeStart.x;
-  const deltaY = event.clientY - spreadSwipeStart.y;
-  spreadSwipeStart = null;
-
-  if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
-    setBookSpread(activeSpread + (deltaX < 0 ? 1 : -1));
-  }
-});
-
-letterPaper.addEventListener('pointercancel', () => {
-  spreadSwipeStart = null;
-});
-
-letterPaper.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowRight') setBookSpread(activeSpread + 1);
-  if (event.key === 'ArrowLeft') setBookSpread(activeSpread - 1);
-});
-
-surpriseSlider.addEventListener('input', () => {
-  activePhoto = Number(surpriseSlider.value);
-  updatePhotoCarousel();
-});
-
-function showCelebration() {
-  const partyEmojis = ['🌸', '🌷', '🌼', '💐', '💖', '💕', '❤️', '🎂', '🧁'];
-  partyParticles.replaceChildren();
-
-  for (let i = 0; i < 50; i += 1) {
-    const item = document.createElement('span');
-    item.className = 'party-item';
-    item.textContent = partyEmojis[Math.floor(Math.random() * partyEmojis.length)];
-    item.style.setProperty('--x', `${Math.random() * 96 + 2}%`);
-    item.style.setProperty('--y', `${Math.random() * 92 + 4}%`);
-    item.style.setProperty('--size', `${Math.round(20 + Math.random() * 18)}px`);
-    item.style.setProperty('--drift', `${Math.round((Math.random() - 0.5) * 150)}px`);
-    partyParticles.appendChild(item);
-  }
-
-  window.clearTimeout(partyTimeout);
-  lastHeart.hidden = true;
-  celebrationParty.style.setProperty('--party-duration', `${CELEBRATION_DURATION}ms`);
-  celebrationParty.hidden = false;
-  celebrationParty.setAttribute('aria-hidden', 'false');
-  partyTimeout = window.setTimeout(() => {
-    celebrationParty.hidden = true;
-    celebrationParty.setAttribute('aria-hidden', 'true');
-    lastHeart.hidden = false;
-  }, CELEBRATION_DURATION);
-}
-
-lastHeart.addEventListener('click', () => {
-  lastHeart.hidden = true;
-  envelopeStage.hidden = false;
-  letterPaper.hidden = true;
-  letterDialog.showModal();
-});
-
-document.getElementById('openLetter').addEventListener('click', () => {
-  envelopeStage.hidden = true;
-  letterPaper.hidden = false;
-  letterPaper.classList.remove('is-open');
-  bookCover.setAttribute('aria-expanded', 'false');
-  setBookSpread(0);
-
-  const particles = document.getElementById('bookParticles');
-  const loveEmojis = ['♡', '♥', '💕', '✨', '🌸'];
-  particles.replaceChildren();
-
-  for (let i = 0; i < 34; i += 1) {
-    const particle = document.createElement('span');
-    particle.className = 'book-particle';
-    particle.textContent = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
-    particle.style.setProperty('--x', `${Math.random() * 100}%`);
-    particle.style.setProperty('--y', `${Math.random() * 100}%`);
-    particle.style.setProperty('--size', `${15 + Math.random() * 13}px`);
-    particle.style.setProperty('--delay', `${Math.random() * -7}s`);
-    particle.style.setProperty('--duration', `${5 + Math.random() * 5}s`);
-    particles.appendChild(particle);
-  }
-});
-
-bookCover.addEventListener('click', () => {
-  letterPaper.classList.add('is-open');
-  bookCover.setAttribute('aria-expanded', 'true');
-});
-
-document.querySelectorAll('.memory-photo img').forEach((image) => {
-  const markMissingPhoto = () => image.closest('.memory-photo').classList.add('is-empty');
-  image.addEventListener('error', markMissingPhoto);
-  if (image.complete && image.naturalWidth === 0) markMissingPhoto();
-});
-
-document.getElementById('letterClose').addEventListener('click', () => {
-  letterDialog.close();
-});
-
-function updatePhotoCarousel() {
-  const step = Math.min(photoOrbit.clientWidth * 0.4, 300);
-  const finalPhotoIndex = photoCards.length - 1;
-  const reachedFinalPhoto = activePhoto === finalPhotoIndex && renderedPhoto !== finalPhotoIndex;
-  renderedPhoto = activePhoto;
-  const surpriseUnlocked = activePhoto === finalPhotoIndex;
-  surpriseSlider.value = String(activePhoto);
-  sliderHint.textContent = surpriseUnlocked
-    ? 'Kejutan terbuka! Selamat ulang tahun! 🎉'
-    : `Foto ${activePhoto + 1} dari ${photoCards.length}`;
-
-  if (reachedFinalPhoto) showCelebration();
-
-  photoCards.forEach((card, index) => {
-    let offset = index - activePhoto;
-    if (offset > photoCards.length / 2) offset -= photoCards.length;
-    if (offset < -photoCards.length / 2) offset += photoCards.length;
-
-    const distance = Math.abs(offset);
-    const scale = Math.max(0.58, 1 - distance * 0.12);
-    card.style.transform = `translate(-50%, -50%) translate3d(${offset * step}px, 0, ${-distance * 90}px) rotateY(${-offset * 32}deg) scale(${scale})`;
-    card.style.zIndex = String(10 - distance);
-    card.style.opacity = distance > 3 ? '0' : distance === 0 ? '1' : String(Math.max(0.28, 0.52 - distance * 0.07));
-    card.style.pointerEvents = distance > 3 ? 'none' : 'auto';
-    card.classList.toggle('is-active', offset === 0);
-    card.setAttribute('aria-current', offset === 0 ? 'true' : 'false');
-  });
-}
-
-photoOrbit.addEventListener('pointerdown', (event) => {
-  if (event.button !== undefined && event.button !== 0) return;
-  dragStartX = event.clientX;
-});
-
-window.addEventListener('pointerup', (event) => {
-  if (dragStartX === null) return;
-  const distance = event.clientX - dragStartX;
-  dragStartX = null;
-
-  if (Math.abs(distance) > 8) suppressPhotoClickUntil = Date.now() + 400;
-  if (Math.abs(distance) < 40) return;
-
-  const steps = Math.max(1, Math.round(Math.abs(distance) / 100));
-  activePhoto = (activePhoto + (distance < 0 ? steps : -steps) + photoCards.length * 10) % photoCards.length;
-  updatePhotoCarousel();
-});
-
-window.addEventListener('pointercancel', () => {
-  dragStartX = null;
-});
-
-window.addEventListener('resize', () => {
-  updatePhotoCarousel();
-  if (!galleryScreen.hidden) resizeHeartCanvas();
-});
-
-photoCards.forEach((card, index) => {
-  const image = card.querySelector('img');
-  image.addEventListener('load', () => card.classList.add('has-photo'));
-  image.addEventListener('error', () => card.classList.remove('has-photo'));
-
-  card.addEventListener('click', () => {
-    if (Date.now() < suppressPhotoClickUntil) return;
-
-    if (index !== activePhoto) {
-      activePhoto = index;
-      updatePhotoCarousel();
-      return;
-    }
-
-    const hasPhoto = image.complete && image.naturalWidth > 0;
-    viewerImage.hidden = !hasPhoto;
-
-    if (hasPhoto) {
-      viewerImage.src = image.src;
-      viewerCaption.textContent = image.alt;
-    } else {
-      viewerCaption.textContent = `Tambahkan ${image.getAttribute('src')} ke project untuk mengisi foto ini.`;
-    }
-
-    photoViewer.showModal();
-  });
-});
-
-updatePhotoCarousel();
-
-document.querySelector('.viewer-close').addEventListener('click', () => {
-  photoViewer.close();
-});
-
-photoViewer.addEventListener('click', (event) => {
-  if (event.target === photoViewer) photoViewer.close();
-});
+    <script src="script.js"></script>
+  </body>
+</html>
