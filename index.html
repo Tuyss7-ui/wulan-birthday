@@ -1,286 +1,277 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#091127">
-  <meta name="description" content="Surat ulang tahun digital dari Ghibtah untuk Wulan — 13 Oktober.">
-  <title>Untuk Wulan ♡ 13 Oktober</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div id="preloader" class="preloader" aria-hidden="true">
-    <div class="loader-heart">♥</div>
-    <p>menyiapkan sesuatu untuk Wulan...</p>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selamat Ulang Tahun</title>
+    <style>
+      /* Fallback for mobile file previews that cannot load the sibling CSS file. */
+      * { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        min-height: 100svh;
+        margin: 0;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: radial-gradient(ellipse at 50% 45%, #432540, #100b16 72%);
+        color: #f8eaf2;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .square {
+        position: relative;
+        width: min(390px, 100%);
+        height: min(570px, calc(100svh - 32px));
+        min-height: min(500px, calc(100svh - 32px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .login-hearts { position: fixed; inset: 0; pointer-events: none; opacity: .12; }
+      .love { position: fixed; pointer-events: none; }
+      .love-word { color: #ff9bc4; font-size: 10px; }
+      .login-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 62px 28px 20px;
+        border: 1px solid rgba(236,198,219,.2);
+        border-radius: 24px;
+        background: linear-gradient(145deg, #48253d, #411f36);
+        box-shadow: 0 18px 48px rgba(0,0,0,.3);
+        text-align: center;
+      }
+      .login-flower { position: absolute; top: -30px; left: 50%; font-size: 40px; transform: translateX(-50%); }
+      .login-card .eyebrow { display: none; }
+      .login-card h1 { margin: 0; color: #f8eaf2; font: 400 clamp(27px, 7vw, 34px)/1.25 Georgia, serif; white-space: nowrap; }
+      .login-card .subtitle { margin: 12px 0 30px; color: rgba(238,218,231,.6); font-size: 12px; }
+      .login-card form { position: relative; }
+      .login-card #pin { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+      .pin-dots { display: flex; justify-content: center; gap: 12px; margin: 0 auto 28px; }
+      .pin-dots span { width: 14px; height: 14px; border: 1px solid rgba(237,190,217,.35); border-radius: 50%; }
+      .pin-dots span.is-filled { background: #f18cbb; border-color: #f18cbb; }
+      .number-pad { display: grid; grid-template-columns: repeat(3, 1fr); justify-items: center; gap: 10px 12px; }
+      .login-card .number-pad button {
+        width: 54px; height: 54px; margin: 0; padding: 0;
+        border: 1px solid rgba(239,211,230,.14); border-radius: 50%;
+        background: rgba(255,255,255,.045); color: #faedf6;
+        font: 16px Georgia, serif; cursor: pointer;
+      }
+      .login-card .number-pad .enter-key { font: 21px Arial, sans-serif; }
+      .login-card .message { position: absolute; right: 0; bottom: -22px; left: 0; min-height: 14px; margin: 0; color: #f4bdd7; font-size: 10px; }
+      .login-footer { margin: 20px 0 0; color: rgba(238,218,231,.55); font-size: 10px; }
+      [hidden] { display: none !important; }
+      .square.gallery-mode { width: min(720px, calc(100vw - 24px)); height: min(720px, calc(100svh - 24px)); min-height: 0; }
+      .gallery-screen { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 24px; background: linear-gradient(145deg, #172443, #100b16); }
+      .gallery-heading { position: absolute; top: 6%; z-index: 2; width: 100%; text-align: center; }
+      .gallery-heading .eyebrow { color: #ff9bc4; }
+      .gallery-heading h1 { margin: 0; font: 32px Georgia, serif; }
+      .gallery-hint { color: #c4c9d8; font-size: 11px; }
+      .photo-orbit { position: absolute; inset: 15% 0 25%; perspective: 900px; touch-action: pan-y; }
+      .photo-card { position: absolute; top: 50%; left: 50%; width: clamp(130px, 40vw, 190px); height: clamp(170px, 51vw, 245px); padding: 5px; overflow: hidden; border: 1px solid #ff9bc4; border-radius: 16px; background: #172443; cursor: pointer; }
+      .photo-card img, .photo-placeholder { position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); border-radius: 10px; }
+      .photo-card img { object-fit: cover; }
+      .photo-card:not(.has-photo) img { display: none; }
+      .photo-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffd1e3; background: #202944; }
+      .surprise-slider { position: absolute; right: 5%; bottom: 6%; left: 5%; padding: 12px; border: 1px solid rgba(255,180,213,.42); border-radius: 16px; background: #171426; text-align: center; }
+      .surprise-slider label, .slider-hint { display: block; color: #ffe1ee; font-size: 11px; }
+      .surprise-slider input { width: 100%; accent-color: #ff6fae; }
+      .heart-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+      @media (max-width: 360px) {
+        .login-card { padding-right: 18px; padding-left: 18px; }
+        .number-pad { gap: 9px 8px; }
+        .login-card .number-pad button { width: 50px; height: 50px; }
+      }
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="square" id="app">
+      <div class="login-hearts" id="loginHearts" aria-hidden="true"></div>
+      <section class="login-card" id="loginCard" aria-labelledby="page-title">
+        <div class="login-flower" aria-hidden="true">🌸</div>
+        <p class="eyebrow">Hari spesialmu</p>
+        <h1 id="page-title">For You, My Love</h1>
+        <p class="subtitle">Enter our secret code</p>
 
-  <canvas id="fx" aria-hidden="true"></canvas>
-  <div class="grain" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="progress"><span id="progressBar"></span></div>
+        <form id="loginForm">
+          <input
+            id="pin"
+            name="pin"
+            type="password"
+            inputmode="numeric"
+            maxlength="8"
+            autocomplete="one-time-code"
+            aria-label="PIN tanggal lahir, 8 angka"
+            aria-describedby="pinDots message"
+          />
+          <div class="pin-dots" id="pinDots" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="number-pad" aria-label="Keypad PIN">
+            <button type="button" data-key="1">1</button>
+            <button type="button" data-key="2">2</button>
+            <button type="button" data-key="3">3</button>
+            <button type="button" data-key="4">4</button>
+            <button type="button" data-key="5">5</button>
+            <button type="button" data-key="6">6</button>
+            <button type="button" data-key="7">7</button>
+            <button type="button" data-key="8">8</button>
+            <button type="button" data-key="9">9</button>
+            <button type="button" data-action="clear" aria-label="Hapus semua angka">×</button>
+            <button type="button" data-key="0">0</button>
+            <button type="submit" class="enter-key" aria-label="Masuk">↵</button>
+          </div>
+          <p id="message" class="message" role="status" aria-live="polite"></p>
+        </form>
+        <p class="login-footer">Masukkan 8 angka untuk membuka kenangan 💕</p>
+      </section>
 
-  <button id="music" class="music" type="button" aria-label="Nyalakan musik" aria-pressed="false">
-    <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span id="musicLabel">musik</span>
-  </button>
+      <section class="gallery-screen" id="galleryScreen" aria-labelledby="gallery-title" hidden>
+        <header class="gallery-heading">
+          <p class="eyebrow">Karunia Tsani Putri Wulandari</p>
+          <h1 id="gallery-title">Untukmu <span aria-hidden="true">♥</span></h1>
+          <p class="gallery-hint">Geser foto untuk melihat kenangan · tekan untuk memperbesar</p>
+        </header>
 
-  <audio id="audio" loop preload="metadata" playsinline>
-    <source src="assets/music/betty.mp3" type="audio/mpeg">
-  </audio>
+        <canvas class="heart-canvas" id="heartCanvas" aria-hidden="true"></canvas>
 
-  <main>
-    <section class="scene hero" id="s0">
-      <div class="stars" aria-hidden="true"></div>
-      <div class="moon" aria-hidden="true"></div>
-      <div class="floating-hearts" aria-hidden="true"></div>
+        <div class="photo-orbit" aria-label="Delapan foto kenangan">
+          <button class="photo-card" type="button" style="--angle: 0deg" aria-label="Perbesar foto 1">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 1</small></span>
+            <img src="foto-1.jpg" alt="Kenangan 1" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 45deg" aria-label="Perbesar foto 2">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 2</small></span>
+            <img src="foto-2.jpg" alt="Kenangan 2" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 90deg" aria-label="Perbesar foto 3">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 3</small></span>
+            <img src="foto-3.jpg" alt="Kenangan 3" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 135deg" aria-label="Perbesar foto 4">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 4</small></span>
+            <img src="foto-4.jpg" alt="Kenangan 4" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 180deg" aria-label="Perbesar foto 5">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 5</small></span>
+            <img src="foto-5.jpg" alt="Kenangan 5" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 225deg" aria-label="Perbesar foto 6">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 6</small></span>
+            <img src="foto-6.jpg" alt="Kenangan 6" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 270deg" aria-label="Perbesar foto 7">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 7</small></span>
+            <img src="foto-7.jpg" alt="Kenangan 7" />
+          </button>
+          <button class="photo-card" type="button" style="--angle: 315deg" aria-label="Perbesar foto 8">
+            <span class="photo-placeholder" aria-hidden="true">♡<small>Foto 8</small></span>
+            <img src="foto-8.jpg" alt="Kenangan 8" />
+          </button>
+        </div>
 
-      <div class="hero-copy reveal">
-        <div class="eyebrow">FOR MY DEAREST WULAN ♡</div>
-        <h1>Happy Birthday<br><span>Wulan ♡</span></h1>
-        <p>Hari ini dunia terasa lebih indah<br>karena ada kamu di dalamnya.</p>
+        <div class="spinning-ball" aria-hidden="true">
+          <div class="ball-orb"><span></span></div>
+          <div class="ball-ring ball-ring-one"></div>
+          <div class="ball-ring ball-ring-two"></div>
+        </div>
 
-        <button id="begin" class="pill" type="button">
-          <span>♡</span> Buka Kado
+        <div class="surprise-slider">
+          <label for="surpriseSlider">Geser foto 1 sampai 8 untuk membuka kejutan 🎁</label>
+          <input id="surpriseSlider" type="range" min="0" max="7" step="1" value="0" aria-label="Pilih foto, 1 sampai 8" aria-describedby="sliderHint" />
+          <span id="sliderHint" class="slider-hint" aria-live="polite">Foto 1 dari 8</span>
+        </div>
+
+        <button class="last-heart" id="lastHeart" type="button" aria-label="Buka surat ulang tahun" hidden>♥</button>
+      </section>
+    </main>
+
+    <div class="celebration-party" id="celebrationParty" aria-hidden="true" hidden>
+      <div class="party-particles" id="partyParticles"></div>
+      <div class="party-message">SELAMAT ULANG TAHUN SAYANG <span>🎂</span></div>
+    </div>
+
+    <dialog class="photo-viewer" id="photoViewer" aria-label="Foto diperbesar">
+      <button class="viewer-close" type="button" aria-label="Tutup foto">×</button>
+      <img id="viewerImage" alt="Foto kenangan diperbesar" />
+      <p id="viewerCaption"></p>
+    </dialog>
+
+    <dialog class="letter-dialog" id="letterDialog" aria-label="Surat ulang tahun">
+      <button class="viewer-close" id="letterClose" type="button" aria-label="Tutup surat">×</button>
+      <div class="envelope-stage" id="envelopeStage">
+        <p class="letter-eyebrow">Ada surat kecil untukmu</p>
+        <div class="envelope" aria-hidden="true"><span>♥</span></div>
+        <button class="open-letter" id="openLetter" type="button">Buka surat 💌</button>
+      </div>
+      <article class="letter-paper" id="letterPaper" hidden>
+        <button class="book-cover" id="bookCover" type="button" aria-label="Buka buku kenangan" aria-expanded="false">
+          <span class="cover-ornament" aria-hidden="true">✦　♥　✦</span>
+          <span class="cover-kicker">SEBUAH CERITA KECIL</span>
+          <span class="cover-title">Untukmu,<br />di hari istimewa</span>
+          <span class="cover-heart" aria-hidden="true">♥</span>
+          <span class="cover-instruction">Buka buku ♡</span>
         </button>
-
-        <small class="hint">naikkan volume kalau kamu mau ♫</small>
-      </div>
-
-      <div class="scroll-cue" aria-hidden="true">
-        <span>scroll pelan-pelan</span>
-        <i></i>
-      </div>
-    </section>
-
-    <section class="scene gift-scene" id="s1">
-      <div class="ambient-orb orb-a"></div>
-      <div class="ambient-orb orb-b"></div>
-
-      <div class="scene-copy reveal">
-        <div class="eyebrow">A LITTLE SURPRISE</div>
-        <h2>Yuk, buka kado ini...<br><em>Ada sesuatu yang spesial untukmu ♡</em></h2>
-        <p>Klik pelan-pelan ya, Wulan. 🎁</p>
-      </div>
-
-      <button id="gift" class="gift" type="button" aria-label="Buka kado">
-        <span class="glow"></span>
-        <span class="gift-light"></span>
-        <span class="lid"></span>
-        <span class="box"></span>
-        <span class="ribbon-v"></span>
-        <span class="ribbon-h"></span>
-        <span class="bow b1"></span>
-        <span class="bow b2"></span>
-        <b class="spark a">✦</b><b class="spark b">✧</b><b class="spark c">✦</b>
-      </button>
-
-      <div id="giftReveal" class="gift-reveal" aria-live="polite">
-        <strong>HAPPY BIRTHDAY, WULAN! 🎆</strong>
-        <span>Semoga hari ini selembut senyum kamu.</span>
-      </div>
-
-      <div class="section-next">setelah ini, ada sesuatu yang lebih jujur ↓</div>
-    </section>
-
-    <section class="scene love-scene" id="s2">
-      <div class="love-bg" aria-hidden="true"></div>
-      <div class="heart-halo" aria-hidden="true"></div>
-
-      <div class="scene-copy center reveal">
-        <div class="eyebrow dark">JUST SO YOU KNOW</div>
-        <p class="pre-love">Ghibtah cuma mau bilang...</p>
-        <h2 class="love-title">I <em>LOVE</em> YOU</h2>
-        <p class="love-caption">Jarak boleh jauh.<br><b>Perasaan Ghibtah nggak ikut menjauh.</b></p>
-      </div>
-
-      <svg class="heart-svg" viewBox="0 0 100 90" aria-hidden="true">
-        <path id="heartPath" d="M50 82 C40 72 7 55 7 28 C7 8 32 1 50 21 C68 1 93 8 93 28 C93 55 60 72 50 82Z"/>
-      </svg>
-      <div id="heartParticles" aria-hidden="true"></div>
-      <div id="heartTrail" aria-hidden="true"></div>
-    </section>
-
-    <section class="scene ldr-scene" id="s3">
-      <div class="scene-inner reveal">
-        <div class="eyebrow">LDR DI ANTARA KITA</div>
-        <h2>Antara dua tempat,<br><em>ada satu hati yang sama.</em></h2>
-
-        <div class="orbit-card">
-          <div class="person">
-            <div class="avatar">G</div>
-            <b>Ghibtah</b>
-            <small>always here ♡</small>
-          </div>
-
-          <div class="route">
-            <span class="route-line"></span>
-            <span class="route-heart">♥</span>
-            <span class="route-dots">··········</span>
-            <small>4 bulan & terus berjalan...</small>
-          </div>
-
-          <div class="person">
-            <div class="avatar pink">W</div>
-            <b>Wulan</b>
-            <small>always loved ♡</small>
-          </div>
+        <div class="book-particles" id="bookParticles" aria-hidden="true"></div>
+        <div class="book-spread is-active" id="bookSpreadOne" aria-label="Slide 1 dari 2">
+          <section class="book-page book-message">
+            <div class="book-stamp" aria-hidden="true">♥</div>
+            <p class="letter-eyebrow">Untukmu, di hari spesialmu</p>
+            <h2>Selamat Ulang Tahun!</h2>
+            <div class="book-divider" aria-hidden="true">✦　♡　✦</div>
+            <p>Semoga hari ini dipenuhi kebahagiaan, tawa, dan banyak hal indah. Semoga semua impianmu satu per satu terwujud, selalu diberi kesehatan, dan dikelilingi orang-orang yang menyayangimu.</p>
+            <p>Terima kasih sudah menjadi seseorang yang begitu istimewa. Semoga setiap langkahmu membawa cerita yang menyenangkan. Aku sayang kamu! 💖</p>
+            <p class="letter-signoff">Dengan penuh cinta ♥</p>
+            <span class="page-number">01 · selalu untukmu</span>
+          </section>
+          <section class="book-page book-memories" aria-label="Galeri foto kenangan berbentuk hati">
+            <p class="letter-eyebrow">Potongan cerita kita</p>
+            <h2>Kenangan Manis</h2>
+            <div class="memory-heart">
+              <figure class="memory-photo memory-1"><img src="foto-9.jpg" alt="Kenangan manis 1" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-2"><img src="foto-10.jpg" alt="Kenangan manis 2" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-3"><img src="foto-11.jpg" alt="Kenangan manis 3" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-4"><img src="foto-12.jpg" alt="Kenangan manis 4" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-5"><img src="foto-13.jpg" alt="Kenangan manis 5" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-6"><img src="foto-14.jpg" alt="Kenangan manis 6" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-7"><img src="foto-15.jpg" alt="Kenangan manis 7" /><figcaption>♡</figcaption></figure>
+              <figure class="memory-photo memory-8"><img src="foto-16.jpg" alt="Kenangan manis 8" /><figcaption>♡</figcaption></figure>
+            </div>
+            <p class="memory-note">Setiap momen bersamamu jadi cerita favoritku ✨</p>
+            <span class="page-number">02 · cerita kita</span>
+          </section>
         </div>
-
-        <div class="ldr-lines">
-          <p>“Kita memang sedang dipisahkan jarak.”</p>
-          <p>“Tapi setiap hari, kamu tetap punya tempat di pikiran Ghibtah.”</p>
-          <p>“Empat bulan mungkin baru awal...”</p>
-          <p class="big">Masih banyak hari yang ingin Ghibtah lewati sama kamu. 🤎</p>
+        <div class="book-spread scrapbook-spread" id="bookSpreadTwo" aria-label="Slide 2 dari 2" aria-hidden="true">
+          <section class="scrapbook-collage" aria-label="Kolase foto ulang tahun">
+            <p class="letter-eyebrow">Album kecil kita · bagian II</p>
+            <h2 class="collage-title"><span>HAPPY</span><span>BIRTHDAY</span></h2>
+            <div class="collage-photos">
+              <figure class="memory-photo scrapbook-photo scrapbook-1"><img src="foto-17.jpg" alt="Kenangan album 17" /><figcaption>hari penuh tawa</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-2"><img src="foto-18.jpg" alt="Kenangan album 18" /><figcaption>selalu bersama</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-3"><img src="foto-19.jpg" alt="Kenangan album 19" /><figcaption>momen favorit</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-4"><img src="foto-20.jpg" alt="Kenangan album 20" /><figcaption>senyum terbaik</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-5"><img src="foto-21.jpg" alt="Kenangan album 21" /><figcaption>petualangan kecil</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-6"><img src="foto-22.jpg" alt="Kenangan album 22" /><figcaption>cerita kita</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-7"><img src="foto-23.jpg" alt="Kenangan album 23" /><figcaption>hangatnya hari</figcaption></figure>
+              <figure class="memory-photo scrapbook-photo scrapbook-8"><img src="foto-24.jpg" alt="Kenangan album 24" /><figcaption>selamanya ♥</figcaption></figure>
+            </div>
+            <span class="collage-sticker" aria-hidden="true">Cute! ♥</span>
+            <span class="collage-ribbon" aria-hidden="true">♡</span>
+            <span class="page-number">03 · potongan cerita kita</span>
+          </section>
         </div>
-      </div>
-    </section>
+        <nav class="book-navigation" aria-label="Navigasi slide buku">
+          <button id="previousSpread" type="button" aria-label="Slide sebelumnya" disabled>‹</button>
+          <span id="spreadCounter" aria-live="polite">1 / 2</span>
+          <button id="nextSpread" type="button" aria-label="Slide berikutnya">›</button>
+        </nav>
+      </article>
+    </dialog>
 
-    <section class="scene date-scene" id="s4">
-      <div class="date-glow"></div>
-      <div class="date-rings" aria-hidden="true"></div>
-
-      <div class="date-content center reveal">
-        <div class="eyebrow brown">THE DAY THAT MATTERS</div>
-        <div class="date-big" aria-label="13">13</div>
-        <div class="month">O K T O B E R</div>
-        <p>Hari lahir seseorang yang sangat berarti buat Ghibtah.</p>
-
-        <div id="birthdayStatus" class="birthday-status">menuju hari spesialmu...</div>
-
-        <div class="count" aria-label="Hitung mundur ulang tahun">
-          <div><b id="d">00</b><small>hari</small></div>
-          <div><b id="h">00</b><small>jam</small></div>
-          <div><b id="m">00</b><small>menit</small></div>
-          <div><b id="s">00</b><small>detik</small></div>
-        </div>
-
-        <div class="date-heart">♡</div>
-      </div>
-    </section>
-
-    <section class="scene cute-scene" id="s5">
-      <div class="petals" aria-hidden="true"></div>
-
-      <div class="cake reveal" aria-label="Kue ulang tahun animasi">
-        <div class="flame"></div>
-        <div class="candle"></div>
-        <div class="cake-top"></div>
-        <div class="cake-mid"></div>
-        <div class="cake-base"></div>
-        <div class="plate"></div>
-        <div class="sprinkles"></div>
-      </div>
-
-      <div class="cute-copy center reveal">
-        <div class="eyebrow dark">TODAY IS ABOUT YOU</div>
-        <h2>Selamat ulang tahun,<br><em>Wulan yang gemoy. 🎂</em></h2>
-
-        <div class="wish-card">
-          <p>Semoga di umur kamu yang baru, lebih banyak hal baik datang tanpa kamu minta.</p>
-          <p>Semoga senyum kamu selalu punya alasan.</p>
-          <p>Semoga semua yang kamu semogakan pelan-pelan menemukan jalannya.</p>
-          <p class="special">Dan semoga Ghibtah masih boleh jadi salah satu alasan kecil di balik senyum itu. 💗</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="scene photo-scene" id="s6">
-      <div class="scene-inner reveal">
-        <div class="eyebrow">OUR LITTLE MEMORY</div>
-        <h2>Satu foto,<br><em>seribu rasa.</em></h2>
-
-        <div class="scrapbook">
-          <div class="back-card card-a"></div>
-          <div class="back-card card-b"></div>
-          <div class="tape"></div>
-
-          <figure class="photo-card main-photo">
-            <div class="photo-shine"></div>
-            <img src="assets/photos/ghibtah-wulan.jpg" alt="Ghibtah dan Wulan" loading="lazy" decoding="async">
-            <figcaption>Ghibtah × Wulan</figcaption>
-          </figure>
-
-          <div class="sticker heart-sticker">♥</div>
-          <div class="sticker star-sticker">✦</div>
-          <div class="mini-note">jauh di tempat,<br>dekat di hati ♡</div>
-          <div class="date-stamp">13<br>OCT</div>
-        </div>
-
-        <p class="photo-text">Foto ini mungkin sederhana. Tapi momen yang melibatkan kamu nggak pernah terasa sederhana.</p>
-      </div>
-    </section>
-
-    <section class="scene sorry-scene" id="s7">
-      <div class="sorry-glow"></div>
-      <div class="scene-inner center reveal">
-        <div class="eyebrow">A LITTLE APOLOGY</div>
-        <div class="letter-reveal">
-          <p>Wulan...</p>
-          <p>maaf ya.</p>
-          <p>Untuk sekarang Ghibtah cuma bisa ngucapin ulang tahun kamu lewat website kecil ini.</p>
-          <p>Ghibtah pengen banget suatu hari nanti...</p>
-          <p class="big">nggak cuma bisa ngucapin dari jauh.</p>
-          <p class="big">Ghibtah pengen ada di samping kamu.</p>
-          <p class="soft">Bukan cuma lewat layar. 🤎</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="scene promise-scene" id="s8">
-      <div class="promise-orb" aria-hidden="true">♡</div>
-      <div class="scene-inner center narrow reveal">
-        <div class="eyebrow brown">A SMALL PROMISE</div>
-        <h2>Aku nggak tahu masa depan akan seperti apa.</h2>
-        <p>Yang Ghibtah tahu, selama masih diberi kesempatan, Ghibtah akan terus berusaha menjaga apa yang kita punya.</p>
-        <p>Dan semoga suatu hari nanti...</p>
-        <h3>13 Oktober nggak cuma dirayakan lewat layar.</h3>
-        <strong>Tapi langsung di samping kamu. 🌷</strong>
-      </div>
-    </section>
-
-    <section class="scene envelope-scene" id="s9">
-      <div class="scene-inner center reveal">
-        <div class="eyebrow">BUKA SURAT INI ♡</div>
-        <h2>Ada kata-kata<br><em>yang ingin Ghibtah sampaikan.</em></h2>
-
-        <button id="envelope" class="envelope" type="button" aria-label="Buka surat" aria-expanded="false">
-          <span class="env-back"></span>
-          <span class="paper">
-            <span class="paper-inner">
-              <b>Untuk Wulan,</b>
-              <span>Selamat ulang tahun ya, sayang.</span>
-              <span>Terima kasih sudah hadir dan membuat empat bulan terakhir terasa jauh lebih berwarna.</span>
-              <span>Semoga hari ini kamu merasa disayang, dihargai, dan diingat—karena memang kamu sepenting itu.</span>
-              <span>Kalau suatu hari nanti kamu baca ini lagi, semoga kamu ingat bahwa pernah ada seseorang bernama Ghibtah yang dari jauh tetap berusaha membuat kamu tersenyum.</span>
-              <span>Happy birthday, Wulan. 🤍</span>
-              <i>— Ghibtah ♡</i>
-            </span>
-          </span>
-          <span class="flap"></span>
-          <span class="env-front"></span>
-          <span class="seal">♥</span>
-        </button>
-
-        <small class="tap">tap amplopnya ♡</small>
-      </div>
-    </section>
-
-    <section class="scene final-scene" id="s10">
-      <div class="final-stars" aria-hidden="true"></div>
-      <div class="final-heart" aria-hidden="true">♥</div>
-
-      <div class="final-copy center reveal">
-        <div class="eyebrow">13 • 10 • ALWAYS</div>
-        <h2>Happy Birthday,<br><em>Wulan.</em></h2>
-        <p>— dari Ghibtah, yang masih ingin menulis banyak cerita sama kamu.</p>
-        <button id="again" class="outline" type="button">↺ ulangi dari awal</button>
-      </div>
-    </section>
-  </main>
-
-  <script src="js/main.js" defer></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
