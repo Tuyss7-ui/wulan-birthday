@@ -191,6 +191,7 @@ function setBookSpread(index) {
     const isActive = spreadIndex === activeSpread;
     spread.classList.toggle('is-active', isActive);
     spread.setAttribute('aria-hidden', String(!isActive));
+    if (isActive) spread.scrollTop = 0;
   });
   previousSpread.disabled = activeSpread === 0;
   nextSpread.disabled = activeSpread === bookSpreads.length - 1;
@@ -235,7 +236,7 @@ function showCelebration() {
   const partyEmojis = ['🌸', '🌷', '🌼', '💐', '💖', '💕', '❤️', '🎂', '🧁'];
   partyParticles.replaceChildren();
 
-  for (let i = 0; i < 150; i += 1) {
+  for (let i = 0; i < 50; i += 1) {
     const item = document.createElement('span');
     item.className = 'party-item';
     item.textContent = partyEmojis[Math.floor(Math.random() * partyEmojis.length)];
